@@ -7,8 +7,10 @@ export function gameCode(){
   var textX = 50;
   var textY = 50;
   var keydown = {};
+  var keypressed = false;
   var playerBullets = [];
   var enemies = [];
+  var S = score({});
   const FPS = 30;
   setInterval(() => {
       update();
@@ -24,8 +26,9 @@ export function gameCode(){
     if(keydown.left){
       player.x -= 5;
     }
-    if(keydown.space){
+    if(keydown.space && !keypressed){
       player.shoot();
+      keypressed = true;
     }
     //prevent player from travelling off-screen
     player.x = Math.max(0, Math.min(player.x,canvas.width - player.width));
@@ -47,6 +50,8 @@ export function gameCode(){
     if(Math.random() < 0.1){
       enemies.push(Enemy());
     };
+    //check if anything has collided
+    handleCollisions();
   };
 
   function draw(){
@@ -62,6 +67,7 @@ export function gameCode(){
     enemies.forEach(function(enemy){
       enemy.draw();
     });
+    S.draw();
   };
 
   const player = {
@@ -71,8 +77,8 @@ export function gameCode(){
     width: 32,
     height: 32,
     draw: function(){
-      ctx.fillStyle = this.color;
-      ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
   };
 
@@ -89,11 +95,12 @@ export function gameCode(){
     }
     if (e.keyCode === 32){
       //space bar
-      keydown.space = true;
+        keydown.space = true;
     }
   });
   //listen for keyboard depress
   window.addEventListener('keyup', function(e){
+    keypressed = false;
     //clear the corresponding key
     if (e.keyCode === 39){
       //right arrow
@@ -159,6 +166,14 @@ export function gameCode(){
     };
   };
 
+  player.explode = function(){
+    console.log("game over!");
+    //add explosion graphic here
+    //show the score
+    // scores[0] = S;
+    // scores[0].show();
+  };
+
   function Enemy(I){
     I = I || {};
 
@@ -191,6 +206,72 @@ export function gameCode(){
       I.age++;
       I.active = I.active && I.inBounds();
     };
+
+    I.explode = function(){
+      this.active = false;
+      //add explosion graphic here
+    };
     return I;
+  };
+
+  //collision detection
+  function collides(a,b){
+    //returns true if object a and b are overlapping
+    return a.x < b.x + b.width && //is a to the left of b's right edge?
+           a.x + a.width > b.x && //is a to the right of b's left edge?
+           a.y < b.y + b.height && //is a above b's bottom edge?
+           a.y + a.height > b.y //is a below b's top edge?
+           //if all the above are true, the items overlap and hence have
+           //collided so the function will return true
+  };
+
+  function handleCollisions(){
+    playerBullets.forEach((bullet) => {
+      enemies.forEach((enemy) =>{
+        //for each bullet check if it has collided with the enemy
+        if(collides(bullet, enemy)){
+          //if true
+          enemy.explode();
+          bullet.active = false;
+          S.addkill();
+        };
+      });
+    });
+    enemies.forEach((enemy) => {
+      if(collides(enemy, player)){
+        enemy.explode();
+        player.explode();
+      };
+    });
+  };
+
+  function score(S){
+    //don't show the score normally
+    S.active = true;
+    //initialize the score
+    S.score = 0;
+
+    S.addkill = function(){
+      S.score += 10;
+    };
+
+    S.show = function(){
+      S.active = true;
+    };
+
+    S.hide = function(){
+      S.active = false;
+    }
+
+    S.draw =  function(){
+      var str = "Your score: " + S.score.toString();
+      var x = canvas.width/2 - str.length;
+      var y = canvas.height*0.2;
+      ctx.fillText(str,x,y)
+    };
+    return S;
+  };
+
+  function newGame(){
   };
 };
