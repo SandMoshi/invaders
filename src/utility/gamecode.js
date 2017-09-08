@@ -265,9 +265,10 @@ export function gameCode(){
 
     S.draw =  function(){
       var str = "Your score: " + S.score.toString();
-      var x = canvas.width/2 - str.length;
-      var y = canvas.height*0.2;
-      ctx.fillText(str,x,y)
+      ctx.font = '24px sans-serif';
+      var x = canvas.width - ctx.measureText(str).width - 20;
+      var y = canvas.height*0.05 ;
+      ctx.fillText(str,x,y);
     };
     return S;
   };
