@@ -4,8 +4,6 @@ export function gameCode(){
   canvas.height= 600;
   const ctx = canvas.getContext("2d");
     // console.log(ctx);
-  var textX = 50;
-  var textY = 50;
   var keydown = {};
   var keypressed = false;
   var playerBullets = [];
@@ -18,8 +16,6 @@ export function gameCode(){
   }, 1000/FPS);
 
   function update(){
-    textX ++;
-    textY ++;
     if(keydown.right){
       player.x += 5;
     }
@@ -58,7 +54,6 @@ export function gameCode(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     player.draw();
     ctx.fillStyle = "#000";
-    ctx.fillText("Hellow World!",textX,textY);
     //draw the active bullets
     playerBullets.forEach(function(bullet){
       bullet.draw();
