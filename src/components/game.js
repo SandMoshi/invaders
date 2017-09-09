@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {gameCode} from '../utility/gamecode';
 
 class Game extends Component{
-  constructor(){
+  constructor(props){
     super();
   };
 
@@ -11,10 +11,16 @@ class Game extends Component{
     gameCode();
   };
 
+  // const btn_leaders = document.querySelector(".showleaders");
+  // btn_leaders.addEventListener("click",(e) =>{
+  //   showLeaderboard();
+  // });
+
   render(){
     return(
       <div className="Game">
         <canvas id="canvas"></canvas>
+        <button onClick={this.props.getleaderboard} className="showleaders">Show leaderboard</button>
       </div>
     );
   }

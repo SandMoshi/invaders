@@ -9,6 +9,7 @@ export function gameCode(){
   var playerBullets = [];
   var enemies = [];
   var S = score({});
+  var L = null;
   const FPS = 30;
   setInterval(() => {
       update();
@@ -63,6 +64,7 @@ export function gameCode(){
       enemy.draw();
     });
     S.draw();
+    if(L){L.draw();}
   };
 
   const player = {
@@ -137,12 +139,12 @@ export function gameCode(){
       //bullet stays active if inbounds
       I.active = I.active && I.inBounds();
     };
-    console.log(I);
+    //console.log(I);
     return I;
   };
 
   player.shoot = function(){
-    console.log("pew");
+    //console.log("pew");
     var bulletPosition = this.midpoint();
     bulletPosition.y = bulletPosition.y - player.height/2;
     //add bullet to the array
@@ -270,4 +272,12 @@ export function gameCode(){
 
   function newGame(){
   };
+
+  function showLeaderboard(){
+
+    L.draw = function(){
+      //this will make the
+      ctx.fillText("LEADERBOARD!!", 300, 600);
+    }
+  }
 };
