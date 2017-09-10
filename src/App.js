@@ -23,11 +23,6 @@ class App extends Component {
       this.setState({user})
     };
     });
-    //check if snapshot exists
-    // if(snapshot){
-    //   alert("snapshot exists!")
-    //   console.log(snapshot);
-    // }
   }
   async login(){
     //runs when someone clicks login
@@ -49,7 +44,7 @@ class App extends Component {
     leaderboard.on('value', function(snapshot){
       var snapshot = snapshot.val(); //this is the array of data
       console.log(snapshot);
-      this.setState({leaderboard:snapshot});
+      this.setState({leaderboard:snapshot, drawL: true});
    }.bind(this));
   }
 
@@ -57,7 +52,7 @@ class App extends Component {
     const {user} = this.state; //the user that is logged in
     return (
       <div className="App">
-        <Game getleaderboard={this.getleaderboard} leadrboard={this.state.leaderboard}/>
+        <Game getleaderboard={this.getleaderboard} drawL={this.state.drawL} leaderboard={this.state.leaderboard}/>
         <div className="login"> {/* Shows the facebook login buttons */}
           <p>{user ? `Hi, ${user.displayName}!` : "Hi, Please sign in."}</p>
           <button onClick={this.login.bind(this)}>Login with Facebook</button>

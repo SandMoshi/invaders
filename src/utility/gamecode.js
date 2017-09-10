@@ -1,20 +1,32 @@
-export function gameCode(){
-  const canvas = document.getElementById('canvas');
-  canvas.width = 800;
-  canvas.height= 600;
-  const ctx = canvas.getContext("2d");
+const gameCode = (function(){
+
+    const canvas = document.getElementById('canvas');
+    canvas.width = 800;
+    canvas.height= 600;
+    const ctx = canvas.getContext("2d");
     // console.log(ctx);
-  var keydown = {};
-  var keypressed = false;
-  var playerBullets = [];
-  var enemies = [];
-  var S = score({});
-  var L = null;
-  const FPS = 30;
-  setInterval(() => {
-      update();
-      draw();
-  }, 1000/FPS);
+    var keydown = {};
+    var keypressed = false;
+    var playerBullets = [];
+    var enemies = [];
+    var S = score({});
+    var scores = [];
+    var L = showLeaderboard({});
+    var leaderboard;
+    var showL;
+    const FPS = 30;
+
+  function refresh(){
+     setInterval(() => {
+        update();
+        draw();
+      }, 1000/FPS);
+  }
+
+  function consolelog(a){
+    console.log("success!");
+    console.log(a);
+  }
 
   function update(){
     if(keydown.right){
@@ -64,7 +76,6 @@ export function gameCode(){
       enemy.draw();
     });
     S.draw();
-    if(L){L.draw();}
   };
 
   const player = {
@@ -243,7 +254,7 @@ export function gameCode(){
   };
 
   function score(S){
-    //don't show the score normally
+    //always show the score normally
     S.active = true;
     //initialize the score
     S.score = 0;
@@ -273,11 +284,43 @@ export function gameCode(){
   function newGame(){
   };
 
-  function showLeaderboard(){
-
+  function showLeaderboard(L,leaderboard,showL){
+    // L.data = props.leaderboard;
+    // console.log(L.data);
+    // L.showL = props.showL;
+    // console.log(showL);
     L.draw = function(){
-      //this will make the
-      ctx.fillText("LEADERBOARD!!", 300, 600);
+      console.log("L.draw is working!");
+      for (let item of L.data){
+        console.log(item);
+        ctx.fillText("LEADERBOARD!!", 300, 600);
+      }
     }
+    if(L.showL == true){
+      console.log("go ahead show the leaderboard");
+    }
+    return L;
+  };
+  return{
+    consolelog: consolelog,
+    refresh: refresh,
+    showLeaderboard: showLeaderboard,
   }
-};
+});
+
+//-----------------------
+export function leaderboard() {
+  const btn_leaderboard = document.querySelector(".showleaders");
+  btn_leaderboard.addEventListener("click",(e) =>{
+       this.setState({drawL : "true"});
+  });
+}
+//-----------------------
+export function createLeaderboard(props){
+  for (var item in props.leaderboard){
+    console.log(props.leaderboard[item]);
+  }
+}
+//-----------------------
+
+export default gameCode;
