@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import Leaderboard from './Leaderboard';
 
 import gameCode from '../utility/gamecode';
-import {leaderboard, createLeaderboard} from '../utility/gamecode';
 
 class Game extends Component{
   constructor(props){
@@ -13,6 +12,7 @@ class Game extends Component{
   };
 
   componentDidMount(){
+    console.log("component mounted!")
     gameCode();
     gameCode().refresh();
   };
@@ -20,15 +20,15 @@ class Game extends Component{
   componentDidUpdate(){
     console.log("componentDidUpdate");
     //will run when the state changes
-    if(this.props.leaderboard){
-    }
   }
 
   render(){
     return(
-      <div className="Game">
-        <Leaderboard leaderboard={this.props.leaderboard} drawL={this.props.drawL}/>
-        <canvas id="canvas"></canvas>
+      <div>
+        <div className="Game">
+          <Leaderboard leaderboard={this.props.leaderboard} drawL={this.props.drawL}/>
+          <canvas id="canvas"></canvas>
+        </div>
         <button onClick={this.props.getleaderboard} className="showleaders">Show leaderboard</button>
       </div>
     );

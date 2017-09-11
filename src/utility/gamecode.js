@@ -4,6 +4,8 @@ const gameCode = (function(){
     canvas.width = 800;
     canvas.height= 600;
     const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
     // console.log(ctx);
     var keydown = {};
     var keypressed = false;
@@ -11,21 +13,21 @@ const gameCode = (function(){
     var enemies = [];
     var S = score({});
     var scores = [];
-    var L = showLeaderboard({});
     var leaderboard;
     var showL;
     const FPS = 30;
 
-  function refresh(){
-     setInterval(() => {
-        update();
-        draw();
+  function refresh(a){
+    if (a != "stop"){
+      var mytimer = window.setInterval(function() {
+          update();
+          draw();
       }, 1000/FPS);
-  }
-
-  function consolelog(a){
-    console.log("success!");
-    console.log(a);
+    }
+    else if (a == "stop"){
+      console.log("stop!");
+      window.clearInterval(6); //6 is what mytimer is
+    }
   }
 
   function update(){
@@ -65,8 +67,9 @@ const gameCode = (function(){
 
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
     player.draw();
-    ctx.fillStyle = "#000";
     //draw the active bullets
     playerBullets.forEach(function(bullet){
       bullet.draw();
@@ -284,43 +287,40 @@ const gameCode = (function(){
   function newGame(){
   };
 
-  function showLeaderboard(L,leaderboard,showL){
-    // L.data = props.leaderboard;
-    // console.log(L.data);
-    // L.showL = props.showL;
-    // console.log(showL);
-    L.draw = function(){
-      console.log("L.draw is working!");
-      for (let item of L.data){
-        console.log(item);
-        ctx.fillText("LEADERBOARD!!", 300, 600);
-      }
-    }
-    if(L.showL == true){
-      console.log("go ahead show the leaderboard");
-    }
-    return L;
-  };
   return{
-    consolelog: consolelog,
     refresh: refresh,
-    showLeaderboard: showLeaderboard,
   }
 });
-
-//-----------------------
-export function leaderboard() {
-  const btn_leaderboard = document.querySelector(".showleaders");
-  btn_leaderboard.addEventListener("click",(e) =>{
-       this.setState({drawL : "true"});
-  });
-}
-//-----------------------
-export function createLeaderboard(props){
-  for (var item in props.leaderboard){
-    console.log(props.leaderboard[item]);
-  }
-}
-//-----------------------
-
 export default gameCode;
+//-----------------------
+export function showLeaderboard(){
+  console.log("showLeaderboard ran");
+  //this refers to component
+ const leaderboardDIV = document.querySelector("div.leaderboard");
+ leaderboardDIV.classList.remove("hidden");
+ leaderboardDIV.style.top = "0";
+};
+
+export function EscMessage(){
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext("2d");
+  var str = "Press Esc to exit";
+  ctx.font = '18px sans-serif';
+  var x = 20;
+  var y = canvas.height*0.95 ;
+  ctx.fillStyle = "yellow";
+  var count = 0; //used for flashing effect
+  var esctimer = window.setInterval(function() {
+      ++count
+      if(count % 2 == 0){
+        ctx.fillStyle = "yellow";
+        ctx.fillText(str,x,y);
+      }
+      else{
+        ctx.clearRect(20,y-20,ctx.measureText(str).width+20,y);
+        ctx.fillStyle = "black";
+        ctx.fillRect(20,y-20,ctx.measureText(str).width+20,y);;
+      }
+   }, 1000);
+}
+//-----------------------

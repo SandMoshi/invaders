@@ -1,23 +1,28 @@
 import React from 'react';
 // import {CSSTransitionGroup} from 'react-transition-group';
-import {leaderboard, createLeaderboard} from '../utility/gamecode';
+import gameCode from '../utility/gamecode';
+import {showLeaderboard, EscMessage} from '../utility/gamecode';
 
 class Leaderboard extends React.Component{
   constructor(props){
-    super();
+    super(props);
+    this.showLeaderboard = showLeaderboard.bind(this);
     this.state = {
     }
   };
 
   componentDidUpdate(){
     if(this.props.leaderboard){
-      createLeaderboard(this.props);
+      console.log(this.props.leaderboard)
+      gameCode().refresh("stop");
+      this.showLeaderboard();
+      EscMessage();
     }
   }
 
   render(){
     return(
-      <div className="leaderboard">
+      <div className="leaderboard hidden">
         <h3 className="h1">High Scores</h3>
         <ul className="leaderboard">
           {
