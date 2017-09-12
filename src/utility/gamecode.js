@@ -1,3 +1,5 @@
+import M484ExplosionSprites1 from '../media/M484ExplosionSprites1.png';
+
 const gameCode = (function(){
 
     const canvas = document.getElementById('canvas');
@@ -16,6 +18,8 @@ const gameCode = (function(){
     var leaderboard;
     var showL;
     const FPS = 30;
+    var explosionImage = new Image();
+    explosionImage.src = M484ExplosionSprites1;
 
   function refresh(a){
     if (a != "stop"){
@@ -180,9 +184,74 @@ const gameCode = (function(){
   player.explode = function(){
     console.log("game over!");
     //add explosion graphic here
+    explosion();
     //show the score
     // scores[0] = S;
     // scores[0].show();
+  };
+
+  function explosion(){
+    console.log("explosion");
+    var imageWidth = explosionImage.width;
+
+    var explosion = sprite({
+      context: ctx,
+      image: explosionImage,
+      width: explosionImage.width,
+      height:  explosionImage.height,
+      loop: false,
+      numberOfFrames: 7,
+      ticksPerFrame: 10,
+    });
+
+
+    function sprite(options){
+      var that = {};
+      that.context = options.context;
+      that.width = options.width;
+      that.height = options.height;
+      that.image = options.image;
+      console.log(that);
+
+      var frameIndex = 0; //current frame to be displayed
+      var tickCount = 0; //the number of updates since the current frame was displayed
+      var ticksPerFrame = options.ticksPerFrame || 0; //the delay between frames
+      const numberOfFrames = options.numberOfFrames || 1; //how many images in the sprite
+
+      that.render = function() {
+        //Draw the animation
+        that.context.drawImage(that.image, frameIndex * that.width / numberOfFrames , 0 , that.width / numberOfFrames, that.height, 0, 0, that.width / numberOfFrames, that.height);
+      };
+
+      that.loop = options.loop;
+
+      that.update = function(){
+        tickCount += 1;
+        if(tickCount > ticksPerFrame){
+          tickCount = 0;
+          //go to next sprite frame
+          frameIndex += 1;
+          //Check if we are past the last frame
+          if (frameIndex < numberOfFrames - 1){
+            //Go to next frame
+            frameIndex += 1;
+          } else if(that.loop){
+            frameIndex = 0; //reset the animation
+          }
+        }
+      };
+      return that;
+    };
+
+    function spriteLoop(){
+      window.requestAnimationFrame(spriteLoop);
+      explosion.update();
+      explosion.render();
+    }
+
+    // explosion.render();
+    spriteLoop();
+
   };
 
   function Enemy(I){
@@ -220,6 +289,7 @@ const gameCode = (function(){
 
     I.explode = function(){
       this.active = false;
+      explosion();
       //add explosion graphic here
     };
     return I;
