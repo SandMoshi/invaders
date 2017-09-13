@@ -184,13 +184,13 @@ const gameCode = (function(){
   player.explode = function(){
     console.log("game over!");
     //add explosion graphic here
-    explosion();
+    explosion(this.x,this.y);
     //show the score
     // scores[0] = S;
     // scores[0].show();
   };
 
-  function explosion(){
+  function explosion(x,y){
     console.log("explosion");
     var imageWidth = explosionImage.width;
 
@@ -220,7 +220,7 @@ const gameCode = (function(){
 
       that.render = function() {
         //Draw the animation
-        that.context.drawImage(that.image, frameIndex * that.width / numberOfFrames , 0 , that.width / numberOfFrames, that.height, 0, 0, that.width / numberOfFrames, that.height);
+        that.context.drawImage(that.image, frameIndex * that.width / numberOfFrames , 0 , that.width / numberOfFrames, that.height, x, y, that.width / numberOfFrames, that.height);
       };
 
       that.loop = options.loop;
@@ -289,7 +289,7 @@ const gameCode = (function(){
 
     I.explode = function(){
       this.active = false;
-      explosion();
+      explosion(I.x,I.y);
       //add explosion graphic here
     };
     return I;
