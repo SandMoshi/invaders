@@ -1,7 +1,6 @@
 import M484ExplosionSprites1 from '../media/M484ExplosionSprites1.png';
 
 const gameCode = (function(){
-
     const canvas = document.getElementById('canvas');
     canvas.width = 800;
     canvas.height= 600;
@@ -21,16 +20,19 @@ const gameCode = (function(){
     var explosionImage = new Image();
     explosionImage.src = M484ExplosionSprites1;
 
-  function refresh(a){
-    if (a != "stop"){
+  function refresh(a,comp){
+    if (a == "start"){
       var mytimer = window.setInterval(function() {
           update();
           draw();
       }, 1000/FPS);
+      return mytimer;
     }
     else if (a == "stop"){
       console.log("stop!");
-      window.clearInterval(6); //6 is what mytimer is
+      var timer = comp.state.mytimer || comp.props.mytimer;
+      console.log(timer);
+      window.clearInterval(timer); //6 is what mytimer is
     }
   }
 
@@ -363,6 +365,7 @@ const gameCode = (function(){
 });
 export default gameCode;
 //-----------------------
+
 export function showLeaderboard(){
   console.log("showLeaderboard ran");
   //this refers to component
@@ -371,7 +374,7 @@ export function showLeaderboard(){
  leaderboardDIV.style.top = "0";
 };
 
-export function EscMessage(){
+export function EscMessage(comp,action){
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext("2d");
   var str = "Press Esc to exit";
@@ -379,8 +382,13 @@ export function EscMessage(){
   var x = 20;
   var y = canvas.height*0.95 ;
   ctx.fillStyle = "yellow";
-  var count = 0; //used for flashing effect
-  var esctimer = window.setInterval(function() {
+  var count = 1; //used for flashing effect
+  if(action === "clear"){
+    var esctimer = comp.state.esctimer;
+    window.clearInterval(esctimer);
+  }
+  else{
+    var esctimer = window.setInterval(function() {
       ++count
       if(count % 2 == 0){
         ctx.fillStyle = "yellow";
@@ -391,6 +399,27 @@ export function EscMessage(){
         ctx.fillStyle = "black";
         ctx.fillRect(20,y-20,ctx.measureText(str).width+20,y);;
       }
-   }, 1000);
+   }, 800);
+   comp.setState({esctimer: esctimer});
+  }
 }
+export function EscListen(){
+  var comp = this;
+  window.addEventListener('keydown', function(e){
+  if(e.keyCode == 27 ){
+      //ESC key is pressed. Check if leaderboard is shown
+      const leaderboardDIV = document.querySelector("div.leaderboard");
+      if(leaderboardDIV.classList.contains("hidden")){
+        //do nothing
+      }
+      else{
+        //hide leaderboard, restart gameCode
+        leaderboardDIV.classList.add("hidden");
+        EscMessage(comp,"clear");
+        var mytimer = gameCode().refresh("start",comp);
+        comp.setState({mytimer:mytimer});
+      }
+    }
+  });
+};
 //-----------------------

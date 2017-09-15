@@ -1,22 +1,31 @@
 import React from 'react';
 // import {CSSTransitionGroup} from 'react-transition-group';
 import gameCode from '../utility/gamecode';
-import {showLeaderboard, EscMessage} from '../utility/gamecode';
+import {showLeaderboard, EscMessage, EscListen} from '../utility/gamecode';
 
 class Leaderboard extends React.Component{
   constructor(props){
-    super(props);
+    super();
     this.showLeaderboard = showLeaderboard.bind(this);
+    this.EscListen = EscListen.bind(this);
     this.state = {
     }
   };
 
-  componentDidUpdate(){
-    if(this.props.leaderboard){
+  componentDidMount(){
+    console.log("leaderboard component did mount");
+    this.EscListen();
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    console.log(this.props);
+    if(this.props.leaderboard && this.props.drawL === true){
       console.log(this.props.leaderboard)
-      gameCode().refresh("stop");
+      var comp = this;
+      gameCode().refresh("stop",comp);
       this.showLeaderboard();
-      EscMessage();
+      EscMessage(comp);
+      this.props.changeDrawL(false);
     }
   }
 

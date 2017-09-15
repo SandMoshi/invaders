@@ -10,6 +10,7 @@ class App extends Component {
   constructor(){
     super()
     this.logout = this.logout.bind(this);
+    this.changeDrawL = this.changeDrawL.bind(this);
     this.getleaderboard = this.getleaderboard.bind(this);
     this.state = {
       user: null,
@@ -48,11 +49,20 @@ class App extends Component {
    }.bind(this));
   }
 
+  changeDrawL(bool){
+    if (bool === false){
+      this.setState({drawL: false});
+    }
+    if (bool === true){
+      this.setState({drawL: true});
+    }
+  }
+
   render() {
     const {user} = this.state; //the user that is logged in
     return (
       <div className="App">
-        <Game getleaderboard={this.getleaderboard} drawL={this.state.drawL} leaderboard={this.state.leaderboard}/>
+        <Game getleaderboard={this.getleaderboard} drawL={this.state.drawL} changeDrawL={this.changeDrawL} leaderboard={this.state.leaderboard} user={this.state.user}/>
         <div className="login"> {/* Shows the facebook login buttons */}
           <p>{user ? `Hi, ${user.displayName}!` : "Hi, Please sign in."}</p>
           <button onClick={this.login.bind(this)}>Login with Facebook</button>
