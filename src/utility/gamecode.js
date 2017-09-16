@@ -165,6 +165,9 @@ const gameCode = (function(){
 
   player.shoot = function(){
     //console.log("pew");
+    //get audio element
+    var audioElement = document.getElementById("laser3");
+    audioElement.play();
     var bulletPosition = this.midpoint();
     bulletPosition.y = bulletPosition.y - player.height/2;
     //add bullet to the array
@@ -187,9 +190,17 @@ const gameCode = (function(){
     console.log("game over!");
     //add explosion graphic here
     explosion(this.x,this.y);
+    //dog whimper
+    var audioElement = document.getElementById("dogwhimper");
+    audioElement.play();
     //show the score
-    // scores[0] = S;
-    // scores[0].show();
+
+
+  player.gameover = function(){
+    //play gameover sound
+    var audioElement = document.getElementById("gameoveraudio");
+    audioElement.play();
+  };
   };
 
   function explosion(x,y){
@@ -253,7 +264,9 @@ const gameCode = (function(){
 
     // explosion.render();
     spriteLoop();
-
+    // play sound
+    var audioElement = document.getElementById("retroExplosion");
+    audioElement.play();
   };
 
   function Enemy(I){

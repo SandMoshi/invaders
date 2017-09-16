@@ -4,6 +4,11 @@ import Leaderboard from './Leaderboard';
 
 import gameCode from '../utility/gamecode';
 
+import laser3 from '../media/laser3.wav';
+import retroExplosion from '../media/retro-game-sfx-explosion.wav';
+import dogwhimper from '../media/puppy-whine.wav';
+import gameoveraudio from '../media/game-over-arcade.wav';
+
 class Game extends Component{
   constructor(props){
     super();
@@ -38,11 +43,17 @@ class Game extends Component{
       <div>
         <div className="Game">
           <Leaderboard leaderboard={this.props.leaderboard} drawL={this.props.drawL} changeDrawL={this.props.changeDrawL} mytimer={this.state.mytimer}/>
-          <canvas id="canvas"></canvas>
+          <canvas id="canvas">
+            Your browser does not support HTML5 Canvas.
+          </canvas>
         </div>
         <button onClick={this.props.getleaderboard} className="showleaders hidden">Show leaderboard</button>
+        <audio id="laser3" src={laser3} type="audio/wav"/>
+        <audio id="retroExplosion" src={retroExplosion} type="audio/wav"/>
+        <audio id="dogwhimper" src={dogwhimper} type="audio/wav"/>
+        <audio id="gameoveraudio" src={gameoveraudio} type="audio/wav"/>
       </div>
-    );
+            );
   }
 }
 
