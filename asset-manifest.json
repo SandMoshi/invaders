@@ -1,6 +1,10 @@
 {
   "main.css": "static/css/main.0dddd928.css",
   "main.css.map": "static/css/main.0dddd928.css.map",
-  "main.js": "static/js/main.fcfdd80c.js",
-  "main.js.map": "static/js/main.fcfdd80c.js.map"
+  "main.js": "static/js/main.c0e66f3d.js",
+  "main.js.map": "static/js/main.c0e66f3d.js.map",
+  "static\\media\\game-over-arcade.wav": "static/media/game-over-arcade.f768a2ef.wav",
+  "static\\media\\laser3.wav": "static/media/laser3.10364e8a.wav",
+  "static\\media\\puppy-whine.wav": "static/media/puppy-whine.b8138e1d.wav",
+  "static\\media\\retro-game-sfx-explosion.wav": "static/media/retro-game-sfx-explosion.ea4efa72.wav"
 }
