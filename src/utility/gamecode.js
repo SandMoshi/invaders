@@ -64,6 +64,7 @@ const gameCode = (function(){
     enemies = enemies.filter(function(enemey){
       return enemey.active;
     });
+
     if(Math.random() < 0.1){
       enemies.push(Enemy());
     };
@@ -89,13 +90,27 @@ const gameCode = (function(){
 
   const player = {
     color: "#00A",
+    active: true,
     x: 220,
     y: canvas.height * 0.9,
     width: 32,
     height: 32,
     draw: function(){
+      if(player.active){
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    },
+    flicker: function(){
+      var count = 5;
+      var timer =  setInterval(function(){
+        if(count <= 0){
+          clearInterval(timer);
+        }
+        player.active = !player.active;
+        count--
+      },400);
+     player.active =  true;
     }
   };
 
@@ -335,8 +350,11 @@ const gameCode = (function(){
     });
     enemies.forEach((enemy) => {
       if(collides(enemy, player)){
+        S.reset();
         enemy.explode();
+        player.active = false;
         player.explode();
+        player.flicker();
       };
     });
   };
@@ -349,6 +367,10 @@ const gameCode = (function(){
 
     S.addkill = function(){
       S.score += 10;
+    };
+
+    S.reset = function(){
+      S.score = 0;
     };
 
     S.show = function(){
