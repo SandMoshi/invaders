@@ -109,8 +109,11 @@ const gameCode = (function(){
         }
         player.active = !player.active;
         count--
-      },400);
-     player.active =  true;
+      },400)
+      setTimeout(function () {
+        player.active =  true;
+        // console.log("player.active = " + player.active);
+      },(count+1)*400+200);
     }
   };
 
@@ -421,6 +424,10 @@ export function EscMessage(comp,action){
   if(action === "clear"){
     var esctimer = comp.state.esctimer;
     window.clearInterval(esctimer);
+    comp.setState({EscMessageVisible: false});
+  }
+  else if(comp.state.EscMessageVisible){
+      //do nothing since the message is already visible
   }
   else{
     var esctimer = window.setInterval(function() {
@@ -436,6 +443,7 @@ export function EscMessage(comp,action){
       }
    }, 800);
    comp.setState({esctimer: esctimer});
+   comp.setState({EscMessageVisible: true});
   }
 }
 export function EscListen(){
