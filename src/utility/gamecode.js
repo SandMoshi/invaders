@@ -205,7 +205,7 @@ const gameCode = (function(){
   };
 
   player.explode = function(){
-    console.log("game over!");
+    //console.log("game over!");
     //add explosion graphic here
     explosion(this.x,this.y);
     //dog whimper
@@ -222,7 +222,7 @@ const gameCode = (function(){
   };
 
   function explosion(x,y){
-    console.log("explosion");
+    //console.log("explosion");
     var imageWidth = explosionImage.width;
 
     var explosion = sprite({
@@ -242,7 +242,7 @@ const gameCode = (function(){
       that.width = options.width;
       that.height = options.height;
       that.image = options.image;
-      console.log(that);
+      //console.log(that);
 
       var frameIndex = 0; //current frame to be displayed
       var tickCount = 0; //the number of updates since the current frame was displayed
@@ -323,6 +323,10 @@ const gameCode = (function(){
     I.explode = function(){
       this.active = false;
       explosion(I.x,I.y);
+      var audioElement = document.getElementById("dogbark");
+      setTimeout(() => {
+        audioElement.play()
+      },200);
       //add explosion graphic here
     };
     return I;

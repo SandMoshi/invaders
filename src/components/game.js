@@ -7,6 +7,7 @@ import gameCode from '../utility/gamecode';
 import laser3 from '../media/laser3.wav';
 import retroExplosion from '../media/retro-game-sfx-explosion.wav';
 import dogwhimper from '../media/puppy-whine.wav';
+import dogbark from '../media/dogbark3b.wav';
 import gameoveraudio from '../media/game-over-arcade.wav';
 
 class Game extends Component{
@@ -51,6 +52,7 @@ class Game extends Component{
         <audio id="laser3" src={laser3} type="audio/wav"/>
         <audio id="retroExplosion" src={retroExplosion} type="audio/wav"/>
         <audio id="dogwhimper" src={dogwhimper} type="audio/wav"/>
+        <audio id="dogbark" src={dogbark} type="audio/wav"/>
         <audio id="gameoveraudio" src={gameoveraudio} type="audio/wav"/>
       </div>
             );
