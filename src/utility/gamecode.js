@@ -1,6 +1,8 @@
+// images
 import M484ExplosionSprites1 from '../media/M484ExplosionSprites1.png';
+import heart from '../media/paw-heart.png';
 
-const gameCode = (function(){
+const gameCode = (function(comp){
     const canvas = document.getElementById('canvas');
     canvas.width = 800;
     canvas.height= 600;
@@ -19,6 +21,9 @@ const gameCode = (function(){
     const FPS = 30;
     var explosionImage = new Image();
     explosionImage.src = M484ExplosionSprites1;
+    var heartImage = new Image();
+    heartImage.src = heart;
+    var comp = comp;
 
   function refresh(a,comp){
     if (a == "start"){
@@ -72,7 +77,7 @@ const gameCode = (function(){
     handleCollisions();
   };
 
-  function draw(){
+  function draw(action){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -86,6 +91,14 @@ const gameCode = (function(){
       enemy.draw();
     });
     S.draw();
+    player.drawlives();
+  };
+
+  function clear(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      console.log("successfully ran clear()")
   };
 
   const player = {
@@ -95,6 +108,7 @@ const gameCode = (function(){
     y: canvas.height * 0.9,
     width: 32,
     height: 32,
+    lives: 3,
     draw: function(){
       if(player.active){
         ctx.fillStyle = this.color;
@@ -114,6 +128,28 @@ const gameCode = (function(){
         player.active =  true;
         // console.log("player.active = " + player.active);
       },(count+1)*400+200);
+    },
+    drawlives: function(){
+      var xlives = 20;
+      var ylives = 10;
+      var lives = player.lives;
+      if (lives === 0){
+        refresh("stop",comp);
+        setTimeout(function(){
+          clear();
+          var str = "GAME OVER";
+          ctx.font = '18px sans-serif';
+          var x = 20;
+          var y = canvas.height*0.5;
+          ctx.fillStyle = "yellow";
+          ctx.fillText(str,x,y);
+        },800);
+      }
+      else while (lives > 0){
+        ctx.drawImage(heartImage, xlives, ylives );
+        xlives += 40;
+        --lives
+      }
     }
   };
 
@@ -211,7 +247,10 @@ const gameCode = (function(){
     //dog whimper
     var audioElement = document.getElementById("dogwhimper");
     audioElement.play();
+    //reduce life
+    --player.lives;
     //show the score
+
 
 
   player.gameover = function(){

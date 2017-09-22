@@ -4,6 +4,7 @@ import Leaderboard from './Leaderboard';
 
 import gameCode from '../utility/gamecode';
 
+// Sounds
 import laser3 from '../media/laser3.wav';
 import retroExplosion from '../media/retro-game-sfx-explosion.wav';
 import dogwhimper from '../media/puppy-whine.wav';
@@ -20,8 +21,8 @@ class Game extends Component{
   componentDidMount(){
     console.log("component mounted!")
     var comp  = this;
-    gameCode();
-    var mytimer = gameCode().refresh("start",comp);
+    gameCode(comp);
+    var mytimer = gameCode(comp).refresh("start",comp);
     console.log(mytimer);
     this.setState({mytimer: mytimer});
   };
